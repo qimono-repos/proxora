@@ -1,0 +1,20 @@
+#!/usr/bin/env bb
+(ns proxora.cli
+  (:require [babashka.process :refer [shell]]))
+
+(defn usage []
+  (println "Usage: proxora -lr | -qu")
+  (println "  -lr  Run Clojure linear regression (Babashka)")
+  (println "  -qu  Run Python/Qiskit implementation"))
+
+(defn -main [& args]
+  (case (first args)
+    "-lr" (shell "bb" "-cp" "clojure/src" "-m" "proxora.regression")
+    "-qu" (do
+            (println "Dispatching to Python/Qiskit implementation...")
+            (shell {:dir "python"} "uv" "run" "proxora" "-qu"))
+    (do
+      (usage)
+      (System/exit 2))))
+
+(apply -main *command-line-args*)
