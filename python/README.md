@@ -37,6 +37,12 @@ The shim (`sitecustomize.py`) is scoped to the venv interpreter. Do **not**
 export `LD_LIBRARY_PATH=$GUIX_PROFILE/lib` in your shell — Ubuntu tools then
 load Guix `libm` and die with `GLIBC_2.43 not found`.
 
+The shim also re-execs the process once with
+`GLIBC_TUNABLES=glibc.rtld.optional_static_tls=65536`, because SciPy and
+`qiskit-aer` `dlopen` `libgomp` and qiskit's Rust `_accelerate` then exceeds
+glibc's default static-TLS surplus (`cannot allocate memory in static TLS
+block`). That happens automatically per interpreter — do not export it.
+
 ## License
 
 Licensed under the GNU Affero General Public License,
