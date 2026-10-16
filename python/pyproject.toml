@@ -1,16 +1,37 @@
 [project]
-name = "python"
+name = "proxora-engine"
 version = "0.1.0"
-description = "Add your description here"
+description = "A next-value predictor comparing classical and variational quantum regression."
 readme = "README.md"
-authors = [
-    { name = "qimono", email = "albert@qimono.vip" }
-]
 requires-python = ">=3.12"
-dependencies = []
+license = "AGPL-3.0-or-later"
+authors = [
+    { name = "Qimono", email = "albert@qimono.vip" }
+]
+keywords = [
+    "regression",
+    "prediction",
+    "quantum-computing",
+    "machine-learning",
+    "qiskit"
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Scientific/Engineering :: Mathematics"
+]
+dependencies = [
+    "numpy",
+    "scipy",
+    "qiskit",
+    "qiskit-aer"
+]
 
 [project.scripts]
-python = "python:main"
+proxora = "proxora:main"
 
 [build-system]
 requires = ["uv_build>=0.12.0,<0.13.0"]
