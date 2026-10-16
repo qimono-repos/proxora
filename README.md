@@ -4,6 +4,8 @@
 
 A focused command-line tool that predicts the next value in a sequence. One task, classical or quantum implementation.
 
+![project-art](./assets/image_readme.png)
+
 ## Name
 
 **PROXORA** is a coined name inspired by *proximity* and the idea of what comes next. It is not an established Esperanto word.
@@ -46,3 +48,12 @@ Quantum methods are not assumed to be better by default. Predictive quality, rep
 ---
 
 *PROXORA — the next value, estimated.*
+
+## License
+
+PROXORA is free software licensed under the GNU Affero General Public License,
+version 3 or (at your option) any later version.
+
+See [LICENSE](LICENSE) for the full license text.
+
+Copyright (C) 2026 Qimono
