@@ -39,3 +39,13 @@ build-backend = "uv_build"
 
 [tool.uv.build-backend]
 module-name = "proxora"
+
+# Ship sitecustomize.py into the venv's site-packages (PEP 427 "purelib"
+# wheel-data scheme). On this Guix host the Guix CPython loader does not
+# search /usr/lib, so NumPy/SciPy/Qiskit-Aer wheels fail to dlopen libz.so.1
+# unless a preload runs at interpreter start. Putting it in the wheel means
+# every `uv sync` (including a recreated venv) reinstalls it, instead of
+# relying on a manual copy into .venv/site-packages that silently disappears
+# when the venv is rebuilt. See shim/sitecustomize.py and scripts/verify-env.sh.
+[tool.uv.build-backend.data]
+purelib = "shim"
