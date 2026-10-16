@@ -21,8 +21,9 @@
     (when (zero? denominator)
       (throw (ex-info "Regression needs at least two distinct x values"
                       {:observations observations})))
-    {:intercept (- mean-y (/ numerator denominator mean-x))
-     :slope (/ numerator denominator)}))
+    (let [slope (/ numerator denominator)]
+      {:intercept (- mean-y (* slope mean-x))
+       :slope slope})))
 
 (defn predict
   "Predict y for x using a model returned by fit."
