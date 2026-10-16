@@ -11,6 +11,32 @@ Both implementations target the same prediction task so that
 predictive performance, reproducibility, and computational cost
 can be compared.
 
+## Setup (Qimono Guix fleet)
+
+This engine targets a Guix-provided Python (**never** a `uv`-downloaded
+CPython). On a Qimono machine:
+
+```bash
+cd python
+uv sync            # uses the Guix python3 (3.12+) from the fleet profile
+uv run proxora -qu
+```
+
+`numpy` / `scipy` / `qiskit-aer` are manylinux wheels that `dlopen` `libz`
+and `libstdc++`. Guix CPython's loader searches the Guix store, not
+`/usr/lib`, so `import numpy` fails with
+`libz.so.1: cannot open shared object file` unless the venv preloads those
+sonames. Install the fleet shim once per venv — and again after any
+`uv sync` that recreates `.venv`:
+
+```bash
+~/source/repos/qimono-repos/dotfiles/scripts/install-guix-wheel-shim.sh .
+```
+
+The shim (`sitecustomize.py`) is scoped to the venv interpreter. Do **not**
+export `LD_LIBRARY_PATH=$GUIX_PROFILE/lib` in your shell — Ubuntu tools then
+load Guix `libm` and die with `GLIBC_2.43 not found`.
+
 ## License
 
 Licensed under the GNU Affero General Public License,
