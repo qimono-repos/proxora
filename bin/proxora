@@ -9,10 +9,12 @@
 
 (defn -main [& args]
   (case (first args)
-    "-lr" (shell "bb" "-cp" "clojure/src" "-m" "proxora.regression")
+    "-lr" (System/exit (:exit (shell {:continue true}
+                                     "bb" "-cp" "clojure/src" "-m" "proxora.regression")))
     "-qu" (do
             (println "Dispatching to Python/Qiskit implementation...")
-            (shell {:dir "python"} "uv" "run" "proxora" "-qu"))
+            (System/exit (:exit (shell {:continue true, :dir "python"}
+                                       "uv" "run" "proxora" "-qu"))))
     (do
       (usage)
       (System/exit 2))))

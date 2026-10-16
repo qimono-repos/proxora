@@ -1,5 +1,6 @@
 """PROXORA: a next-value prediction engine."""
 
+import sys
 from math import pi
 
 from qiskit import QuantumCircuit
@@ -11,6 +12,16 @@ from scipy.optimize import minimize_scalar
 TARGET_PROBABILITY = 0.8
 SHOTS = 1000
 
+USAGE = (
+    "Usage: proxora -qu\n"
+    "  -qu  Run the Python/Qiskit variational quantum implementation"
+)
+
+
+def usage() -> None:
+    """Print the command-line usage message to stderr."""
+    print(USAGE, file=sys.stderr)
+
 
 def probability_of_one(theta: float) -> float:
     """Return the ideal probability of measuring |1> after an Ry(theta) gate."""
@@ -21,7 +32,7 @@ def probability_of_one(theta: float) -> float:
     return float(abs(state.data[1]) ** 2)
 
 
-def main() -> None:
+def run_quantum_regression() -> None:
     """Train one circuit parameter to match a target probability."""
     initial_theta = 0.7
 
@@ -64,5 +75,17 @@ def main() -> None:
     print(f"Circuit:\n{circuit.draw(output='text')}")
 
 
+def main(argv: list[str] | None = None) -> int:
+    """Dispatch the PROXORA command line and return the process exit status."""
+    args = list(sys.argv[1:] if argv is None else argv)
+
+    if args == ["-qu"]:
+        run_quantum_regression()
+        return 0
+
+    usage()
+    return 2
+
+
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

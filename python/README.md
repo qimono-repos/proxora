@@ -4,12 +4,31 @@ The Python implementation of PROXORA, a next-value prediction engine.
 
 ## Models
 
-- `-lr`: Classical linear regression.
+- `-lr`: Classical linear regression (implemented by the Clojure backend; the
+  `bin/proxora` dispatcher routes `-lr` there, not here).
 - `-qu`: Variational quantum regression.
 
 Both implementations target the same prediction task so that
 predictive performance, reproducibility, and computational cost
 can be compared.
+
+## Command line
+
+The Python backend implements the `-qu` route only:
+
+```bash
+uv run proxora -qu
+```
+
+Missing or unknown flags print a usage message to stderr and exit with status
+`2`, matching the `bin/proxora` dispatcher.
+
+## Tests
+
+```bash
+cd python
+uv run python -m unittest discover -s tests
+```
 
 ## Setup (Qimono Guix fleet)
 
