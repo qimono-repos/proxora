@@ -2,7 +2,7 @@
 
 A small, dependency-free learning project for ordinary least-squares linear regression. It is deliberately separate from PROXORA's Python engine: the first goal is to learn Clojure with a familiar mathematical problem.
 
-## Run it
+## Run it directly
 
 From this directory, with Clojure CLI installed:
 
@@ -10,6 +10,16 @@ From this directory, with Clojure CLI installed:
 clojure -M -m proxora.regression
 clojure -M:test
 ```
+
+## Run through the Babashka CLI
+
+From the repository root, with Babashka (`bb`) installed:
+
+```bash
+bb bin/proxora -lr
+```
+
+The dispatcher is the CLI switchboard: `-lr` runs the Clojure regression and `-qu` delegates to the Python project via `uv run proxora -qu`. The quantum dispatch requires the Python CLI to implement that flag; this change establishes the routing boundary, not the Qiskit CLI implementation.
 
 The example fits the observations `[[0 1] [1 3] [2 5] [3 7]]`, recovers the line `y = 1 + 2x`, and predicts `y = 9` at `x = 4`.
 
