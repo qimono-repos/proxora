@@ -47,7 +47,7 @@ mcp/        MCP server in Kotlin, an adapter over the engine bridge
 specs/      task specifications
 ```
 
-## Purpose
+## Purpose (as of UNIX philosofy)
 
 PROXORA does one thing: **predict the next value**.
 
