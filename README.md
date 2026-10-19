@@ -29,6 +29,22 @@ proxora -qu
 
 The command examples describe the intended interface. Input arguments and output behavior depend on the implementation.
 
+### As an MCP server
+
+The [`mcp/`](mcp/README.md) folder exposes the engine to AI clients as Model
+Context Protocol tools: `predict_next` (`lr` or `qu`), `score_forecast`,
+`score_batch` (SPE, MSPE, RMSPE, hit rate) and `backtest`.
+
+## Layout
+
+```
+bin/        CLI dispatcher (Babashka)
+clojure/    classical regression in Clojure
+python/     the engine: proxora.forecast (lr, qu) and proxora.scoring
+mcp/        MCP adapter over the engine
+specs/      task specifications
+```
+
 ## Purpose
 
 PROXORA does one thing: **predict the next value**.
