@@ -1,0 +1,18 @@
+# Versions mirror the official MCP Kotlin SDK sample (samples/weather-stdio-server).
+# Check https://github.com/modelcontextprotocol/kotlin-sdk/releases before bumping.
+[versions]
+coroutines = "1.11.0"
+kotlin = "2.4.21"
+mcp-kotlin = "0.15.0"
+shadow = "9.6.1"
+slf4j = "2.0.20"
+
+[libraries]
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines" }
+mcp-kotlin-server = { group = "io.modelcontextprotocol", name = "kotlin-sdk-server", version.ref = "mcp-kotlin" }
+slf4j-simple = { group = "org.slf4j", name = "slf4j-simple", version.ref = "slf4j" }
+
+[plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
