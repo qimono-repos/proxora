@@ -1,6 +1,6 @@
-__pycache__/
-*.py[cod]
-.venv/
+.gradle/
+.kotlin/
 build/
-dist/
-*.egg-info/
+*.class
+.idea/
+local.properties
