@@ -31,17 +31,19 @@ The command examples describe the intended interface. Input arguments and output
 
 ### As an MCP server
 
-The [`mcp/`](mcp/README.md) folder exposes the engine to AI clients as Model
-Context Protocol tools: `predict_next` (`lr` or `qu`), `score_forecast`,
-`score_batch` (SPE, MSPE, RMSPE, hit rate) and `backtest`.
+The [`mcp/`](mcp/README.md) folder is a Kotlin MCP server that exposes the
+engine to AI clients as Model Context Protocol tools: `predict_next` (`lr` or
+`qu`), `score_forecast`, `score_batch` (SPE, MSPE, RMSPE, hit rate) and
+`backtest`. It reaches the Python engine through `python -m proxora.bridge`
+(one JSON object per line), so the mathematics lives in one place.
 
 ## Layout
 
 ```
 bin/        CLI dispatcher (Babashka)
 clojure/    classical regression in Clojure
-python/     the engine: proxora.forecast (lr, qu) and proxora.scoring
-mcp/        MCP adapter over the engine
+python/     the engine: proxora.forecast (lr, qu), proxora.scoring, proxora.bridge
+mcp/        MCP server in Kotlin, an adapter over the engine bridge
 specs/      task specifications
 ```
 
