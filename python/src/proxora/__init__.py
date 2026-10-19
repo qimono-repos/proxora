@@ -3,10 +3,9 @@
 import sys
 from math import pi
 
-from qiskit import QuantumCircuit
-from qiskit.quantum_info import Statevector
-from qiskit_aer import AerSimulator
-from scipy.optimize import minimize_scalar
+# Qiskit, Aer and SciPy are imported inside the functions that use them, so
+# importing a lighter submodule (proxora.scoring, proxora.forecast) or the MCP
+# adapter does not load the whole quantum stack.
 
 
 TARGET_PROBABILITY = 0.8
@@ -25,6 +24,9 @@ def usage() -> None:
 
 def probability_of_one(theta: float) -> float:
     """Return the ideal probability of measuring |1> after an Ry(theta) gate."""
+    from qiskit import QuantumCircuit
+    from qiskit.quantum_info import Statevector
+
     circuit = QuantumCircuit(1)
     circuit.ry(theta, 0)
 
@@ -34,6 +36,10 @@ def probability_of_one(theta: float) -> float:
 
 def run_quantum_regression() -> None:
     """Train one circuit parameter to match a target probability."""
+    from qiskit import QuantumCircuit
+    from qiskit_aer import AerSimulator
+    from scipy.optimize import minimize_scalar
+
     initial_theta = 0.7
 
     def loss(theta: float) -> float:

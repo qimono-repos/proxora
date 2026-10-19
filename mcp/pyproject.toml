@@ -1,0 +1,31 @@
+[project]
+name = "proxora-mcp"
+version = "0.1.0"
+description = "MCP server exposing PROXORA next-value prediction and forecast scoring as tools."
+readme = "README.md"
+requires-python = ">=3.12"
+license = "AGPL-3.0-or-later"
+authors = [
+    { name = "Qimono", email = "albert@qimono.vip" }
+]
+keywords = ["mcp", "model-context-protocol", "forecasting", "quantum-computing", "qiskit"]
+dependencies = [
+    # The server supports MCP Python SDK 1.x (FastMCP) and 2.x (MCPServer).
+    "mcp>=1.2",
+    "pydantic>=2",
+    "proxora-engine",
+]
+
+[project.scripts]
+proxora-mcp = "proxora_mcp.server:main"
+
+[tool.uv.sources]
+# The engine is the sibling python/ project; the MCP layer is only an adapter.
+proxora-engine = { path = "../python", editable = true }
+
+[build-system]
+requires = ["uv_build>=0.12.0,<0.13.0"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "proxora_mcp"
