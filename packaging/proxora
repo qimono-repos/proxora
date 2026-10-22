@@ -1,0 +1,26 @@
+#!/bin/sh
+# PROXORA launcher installed by the Debian package.
+#
+# Everything the program needs lives under /usr/lib/proxora, so -lr uses the
+# bundled Babashka binary and -qu uses the bundled CPython plus wheels.
+set -eu
+
+PREFIX=/usr/lib/proxora
+
+case "${1:-}" in
+  -lr)
+    shift
+    exec "$PREFIX/bin/bb" -cp "$PREFIX/clojure/src" -m proxora.regression "$@"
+    ;;
+  -qu)
+    shift
+    PYTHONPATH="$PREFIX/site-packages" \
+      exec "$PREFIX/python/bin/python3" -s -m proxora -qu "$@"
+    ;;
+  *)
+    printf 'Usage: proxora -lr | -qu\n' >&2
+    printf '  -lr  Run Clojure linear regression (Babashka)\n' >&2
+    printf '  -qu  Run Python/Qiskit variational quantum implementation\n' >&2
+    exit 2
+    ;;
+esac

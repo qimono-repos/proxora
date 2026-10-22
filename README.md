@@ -44,6 +44,7 @@ bin/        CLI dispatcher (Babashka)
 clojure/    classical regression in Clojure
 python/     the engine: proxora.forecast (lr, qu), proxora.scoring, proxora.bridge
 mcp/        MCP server in Kotlin, an adapter over the engine bridge
+packaging/  self-contained .deb build and post-quantum release verification
 specs/      task specifications
 ```
 

@@ -1,0 +1,5 @@
+.work/
+keys/
+*.deb
+*.sig
+*.sig.json

@@ -1,0 +1,8 @@
+# Release artifacts and packaging scratch space
+/dist/
+/packaging/.work/
+/packaging/keys/
+*.deb
+*.sha256
+*.sha256.sig
+*.sig.json

@@ -3,6 +3,8 @@
 import contextlib
 import io
 import math
+import subprocess
+import sys
 import unittest
 from unittest import mock
 
@@ -40,6 +42,18 @@ class MainDispatchTest(unittest.TestCase):
 
         self.assertEqual(status, 2)
         self.assertIn("Usage: proxora -qu", stderr.getvalue())
+
+
+class ModuleEntryPointTest(unittest.TestCase):
+    def test_python_m_proxora_requires_a_flag(self):
+        done = subprocess.run(
+            [sys.executable, "-m", "proxora"],
+            capture_output=True,
+            text=True,
+            timeout=120,
+        )
+        self.assertEqual(done.returncode, 2)
+        self.assertIn("Usage: proxora -qu", done.stderr)
 
 
 class ProbabilityTest(unittest.TestCase):
