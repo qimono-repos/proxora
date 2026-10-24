@@ -27,6 +27,22 @@ proxora -qu
 - `-lr` — classical linear-regression implementation.
 - `-qu` — quantum implementation using a variational quantum regressor.
 
+### Optimization routes
+
+Same rule, different problem: Max-Cut on a graph given as an edge-list CSV
+(`source,target[,weight]`, optional header).
+
+```bash
+proxora -op     python/examples/ring4.csv   # classical brute force (exact)
+proxora -opqaoa python/examples/ring4.csv   # QAOA p=1 in pyQuil on the Rigetti QVM
+```
+
+`-opqaoa` prints the classical optimum next to the QAOA result, so the
+approximation ratio is always visible. It needs `uv sync --extra rigetti` and
+the `quilc` / `qvm` servers; without them it samples the exact NumPy
+statevector and labels the backend as `numpy-statevector`. See
+[`python/README.md`](python/README.md#optimization-max-cut).
+
 The command examples describe the intended interface. Input arguments and output behavior depend on the implementation.
 
 ### As an MCP server
@@ -42,7 +58,8 @@ engine to AI clients as Model Context Protocol tools: `predict_next` (`lr` or
 ```
 bin/        CLI dispatcher (Babashka)
 clojure/    classical regression in Clojure
-python/     the engine: proxora.forecast (lr, qu), proxora.scoring, proxora.bridge
+python/     the engine: proxora.forecast (lr, qu), proxora.optimization (op, opqaoa),
+            proxora.scoring, proxora.bridge
 mcp/        MCP server in Kotlin, an adapter over the engine bridge
 packaging/  self-contained .deb build and post-quantum release verification
 specs/      task specifications

@@ -1,0 +1,6 @@
+source,target,weight
+warehouse,port,5
+port,factory,1
+factory,warehouse,5
+factory,store,2
+store,port,3

@@ -14,14 +14,55 @@ can be compared.
 
 ## Command line
 
-The Python backend implements the `-qu` route only:
+The Python backend implements `-qu`, `-op` and `-opqaoa`:
 
 ```bash
 uv run proxora -qu
+uv run proxora -op FILE.csv
+uv run proxora -opqaoa FILE.csv
 ```
 
 Missing or unknown flags print a usage message to stderr and exit with status
 `2`, matching the `bin/proxora` dispatcher.
+
+## Optimization: Max-Cut
+
+```bash
+uv run proxora -op     examples/ring4.csv       # classical brute force, up to 20 nodes
+uv run proxora -opqaoa examples/weighted5.csv   # QAOA p=1, up to 12 qubits
+```
+
+Input CSV: one edge per row, `source,target[,weight]` (weight defaults to 1).
+Node names are free text; they become qubits `q0, q1, ...` in order of first
+appearance. A header row and `#` comments are allowed.
+
+`-opqaoa` runs the hybrid loop:
+
+1. Grid search plus Nelder-Mead finds `gamma`, `beta` on the exact NumPy
+   model (`proxora/optimization/maxcut.py`).
+2. The same circuit is built as a parametric Quil program
+   (`proxora/optimization/qaoa.py`): `H` on every qubit, then per edge
+   `CNOT · RZ(2 w gamma) · CNOT` (that is `exp(-i gamma w Z_i Z_j)`), then
+   `RX(2 beta)` on every qubit, then measure. Angles are Quil classical
+   memory, passed through `memory_map`, so the program compiles once.
+3. 1000 shots on the QVM, scored with the same cut weight as `-op`.
+
+Running on the Rigetti QVM:
+
+```bash
+uv sync --extra rigetti
+docker run --rm -it -p 5555:5555 rigetti/quilc -S
+docker run --rm -it -p 5000:5000 rigetti/qvm -S
+uv run proxora -opqaoa examples/ring4.csv
+```
+
+If pyQuil or the servers are missing, `-opqaoa` still runs: it samples the
+exact statevector (seeded) and prints `Backend: numpy-statevector` with the
+reason. Read the backend line before quoting results.
+
+Expected on `examples/ring4.csv`: classical max cut 4, ideal QAOA `<C>` = 3,
+ratio 0.75 (the known p=1 value for ring graphs). Small graphs are trivial
+classically; no quantum advantage is claimed.
 
 ## Tests
 

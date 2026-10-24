@@ -12,7 +12,7 @@ PROXORA is a focused next-value predictor. It compares classical linear regressi
 Read the relevant README and specification before editing. Treat the current implementation as ground truth to inspect, and follow the specific task specification when one applies.
 
 Main components:
-- `bin/proxora`: Babashka command dispatcher; `-lr` invokes the Clojure backend and `-qu` invokes the Python/Qiskit backend.
+- `bin/proxora`: Babashka command dispatcher; `-lr` invokes the Clojure backend, `-qu` invokes the Python/Qiskit backend, and `-op` / `-opqaoa FILE.csv` invoke the Python Max-Cut routes (classical brute force / QAOA in pyQuil).
 - `clojure/`: classical linear-regression implementation.
 - `python/`: Python engine, including forecast models, scoring, CLI, and the line-delimited JSON bridge.
 - `mcp/`: Kotlin MCP server adapter. The prediction/scoring mathematics belongs in the Python engine, not duplicated in the adapter.

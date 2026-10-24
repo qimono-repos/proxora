@@ -30,6 +30,11 @@ dependencies = [
     "qiskit-aer"
 ]
 
+[project.optional-dependencies]
+# pyQuil for the -opqaoa route (Rigetti QVM / QCS). Without it, -opqaoa
+# samples the exact NumPy statevector and says so in its output.
+rigetti = ["pyquil>=4"]
+
 [project.scripts]
 proxora = "proxora:main"
 
