@@ -1,11 +1,21 @@
 #!/usr/bin/env bb
 (ns proxora.cli
-  (:require [babashka.process :refer [shell]]))
+  (:require [babashka.fs :as fs]
+            [babashka.process :refer [shell]]))
 
 (defn usage []
-  (println "Usage: proxora -lr | -qu")
-  (println "  -lr  Run Clojure linear regression (Babashka)")
-  (println "  -qu  Run Python/Qiskit implementation"))
+  (println "Usage: proxora -lr | -qu | -op FILE.csv | -opqaoa FILE.csv")
+  (println "  -lr      Run Clojure linear regression (Babashka)")
+  (println "  -qu      Run Python/Qiskit implementation")
+  (println "  -op      Max-Cut on an edge-list CSV, classical brute force")
+  (println "  -opqaoa  Max-Cut on the same CSV with QAOA in pyQuil (Rigetti QVM)"))
+
+(defn python-route
+  "Run a Python engine route. The engine runs from python/, so the CSV path is
+  made absolute first to keep paths relative to where the user called proxora."
+  [flag path]
+  (System/exit (:exit (shell {:continue true, :dir "python"}
+                             "uv" "run" "proxora" flag (str (fs/absolutize path))))))
 
 (defn -main [& args]
   (case (first args)
@@ -15,6 +25,10 @@
             (println "Dispatching to Python/Qiskit implementation...")
             (System/exit (:exit (shell {:continue true, :dir "python"}
                                        "uv" "run" "proxora" "-qu"))))
+    ("-op" "-opqaoa")
+    (if (= 2 (count args))
+      (python-route (first args) (second args))
+      (do (usage) (System/exit 2)))
     (do
       (usage)
       (System/exit 2))))

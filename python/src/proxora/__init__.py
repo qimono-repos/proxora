@@ -12,8 +12,10 @@ TARGET_PROBABILITY = 0.8
 SHOTS = 1000
 
 USAGE = (
-    "Usage: proxora -qu\n"
-    "  -qu  Run the Python/Qiskit variational quantum implementation"
+    "Usage: proxora -qu | -op FILE.csv | -opqaoa FILE.csv\n"
+    "  -qu       Run the Python/Qiskit variational quantum implementation\n"
+    "  -op       Max-Cut on an edge-list CSV (source,target[,weight]), classical brute force\n"
+    "  -opqaoa   Max-Cut on the same CSV with QAOA in pyQuil (Rigetti QVM)"
 )
 
 
@@ -88,6 +90,11 @@ def main(argv: list[str] | None = None) -> int:
     if args == ["-qu"]:
         run_quantum_regression()
         return 0
+
+    if len(args) == 2 and args[0] in ("-op", "-opqaoa"):
+        from proxora.optimization import run
+
+        return run(args[0], args[1])
 
     usage()
     return 2
